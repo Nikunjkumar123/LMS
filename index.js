@@ -7,6 +7,7 @@ const connectDB = require('./db/db.js');
 const SuperadminauthenticationRouter = require('./Routers/SuperadminauthenticationRouter.js')
 const centreAuthenticationRouter = require('./Routers/centreAuthenticationRouter.js');
 const franchiseauthenticationRouter = require('./Routers/franchiseauthenticationRouter.js');
+const studentAuthenticationRouter = require('./Routers/studentAuthenticationRouter.js');
 const fileUpload = require('express-fileupload');
 const cloudinary = require('./utils/cloudinary.js');
 const verifyToken=require('./Middleware/verifyToken.js');
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
 app.use('/api/v1/Superadmin/auth',SuperadminauthenticationRouter); // Superadmin authentication 
 app.use('/api/v1/franchise/auth',franchiseauthenticationRouter)//centre eqquiry data here
 app.use('/api/v1/centre/auth',centreAuthenticationRouter); //centre authentication
+app.use('/api/v1/student/auth',studentAuthenticationRouter);
 
 
 connectDB(process.env.URL)

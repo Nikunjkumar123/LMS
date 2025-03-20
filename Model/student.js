@@ -59,9 +59,6 @@ const studentSchema = new mongoose.Schema({
   city: {
     type: String,
   },
-  InstitutionName: {
-    type: String,
-  },
   place_dateOfRegistration: {
     //already registered
     type: String,
