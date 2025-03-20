@@ -1,5 +1,6 @@
 const express = require('express');
 const authenticationRouter = express.Router();
+
 const {RegisterUser,LoginUser,LogoutUser,forgotPasswordUser,verifyTokenOTP,updatePasswordOTP} = require('../controllers/auth.controllers.js');
 
 authenticationRouter.route('/register').post(RegisterUser);

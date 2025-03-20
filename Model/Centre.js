@@ -3,25 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const centreSchema = new mongoose.Schema({
-  name: {
-    type: String,
-  },
-  email: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    default: "centre",
-  },
-  phone: {
-    type: String,
-  },
   CenterCode: {
     type: String,
   },
@@ -33,7 +14,24 @@ const centreSchema = new mongoose.Schema({
   },
   AssignedCounsellor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:'Counsellor'
+    ref: "Counsellor",
+  },
+  password: {
+    type: String,
+  },
+  loginId: {
+    type: String,
+  },
+  email: {
+    type: String,
+    unique: true,
+  },
+  role: {
+    type: String,
+    default: "centre",
+  },
+  phone: {
+    type: String,
   },
   emailVerified: {
     type: Boolean,
@@ -49,25 +47,41 @@ const centreSchema = new mongoose.Schema({
     type: String,
     default: "no",
   },
-});
-
-centreSchema.pre("save", async function (next) {
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
+  location: { 
+    type: String, 
+    required: true 
+  },
+  capacity: { 
+    type: Number, 
+    required: true 
+  },
+  availableSeats: { 
+    type: Number, 
+    required: true 
+  },
+  createdAt: { 
+    type: Date, 
+    default: Date.now 
   }
 });
 
-centreSchema.methods.comparePassword = async function (candidatePassword) {
-  try {
-    return await bcrypt.compare(candidatePassword, this.password);
-  } catch (err) {
-    throw new Error("Error comparing passwords");
-  }
-};
+// centreSchema.pre("save", async function (next) {
+//   try {
+//     const salt = await bcrypt.genSalt(10);
+//     this.password = await bcrypt.hash(this.password, salt);
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+// centreSchema.methods.comparePassword = async function (candidatePassword) {
+//   try {
+//     return await bcrypt.compare(candidatePassword, this.password);
+//   } catch (err) {
+//     throw new Error("Error comparing passwords");
+//   }
+// };
 
 centreSchema.methods.createToken = function () {
   const token = jwt.sign(

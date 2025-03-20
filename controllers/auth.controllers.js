@@ -1,4 +1,4 @@
-const UserModel=require('../Model/SuperAdminModel.js')
+const superAdminModel=require('../Model/SuperAdminModel.js')
 const cloudinary = require('cloudinary').v2
 const fs = require('fs');
 const crypto = require('crypto');
@@ -53,67 +53,19 @@ const RegisterUser = async (req, res) => {
       }
   
       const {
-        fullName,
-        age,
-        gender,
-        fatherName,
-        motherName,
-        GrandFatherName,
-        height,
-        dob,
-        maritalstatus,
-        FamilyHead,
-        FamilyHeadOccupation,
-        siblings,
-        Sistersiblings,
-        pehchan,
-        education,
-        working,
-        annualIncome,
-        house,
+        name,
         password,
         phone,
         email,
-        area,
-        city,
-        state,
-        pin,
-        country,
-        weddingBudget,
-        weddingStyle,
         role,
       } = req.body;
   
       // Create a new user
-      const user = await UserModel.create({
-        fullName,
-        email,
+      const user = await superAdminModel.create({
+        name,
         password,
-        age,
-        gender,
-        fatherName,
-        motherName,
-        GrandFatherName,
-        height,
-        dob,
-        maritalstatus,
-        FamilyHead,
-        FamilyHeadOccupation,
-        siblings,
-        Sistersiblings,
-        pehchan,
-        education,
-        working,
-        annualIncome,
-        house,
         phone,
-        area,
-        city,
-        state,
-        pin,
-        country,
-        weddingBudget,
-        weddingStyle,
+        email,
         role,
         image,
       });
@@ -137,7 +89,7 @@ const LoginUser = async (req, res) => {
             return res.status(400).json({ message: 'Enter complete fields' });
         }
 
-        const checkuser = await UserModel.findOne({email} );
+        const checkuser = await superAdminModel.findOne({email} );
         // console.log(checkuser)
         if (!checkuser) {
             return res.status(400).json({ message: 'Enter correct email' });
@@ -188,10 +140,10 @@ const generateOTP = () => {
 const forgotPasswordUser = async(req,res)=>{
     try {
         const userEmail = req.body.email;
-        const userData = await UserModel.findOne({email:userEmail});
+        const userData = await superAdminModel.findOne({email:userEmail});
         if(!userData) return res.status(400).json({msg:"email not registered"});
         const otp = generateOTP();
-        const data = await UserModel.updateOne({email:userEmail},{$set:{myToken:otp}});
+        const data = await superAdminModel.updateOne({email:userEmail},{$set:{myToken:otp}});
         sentResetPasswordMail(userData.name,userData.email,otp)
         res.status(200).json({msg:"please check your Email"});
     } catch (error) {
@@ -202,7 +154,7 @@ const forgotPasswordUser = async(req,res)=>{
 const verifyTokenOTP = async(req,res)=>{
     try {
         const {email,myToken} = req.body;
-        const user=await UserModel.findOne({email:email});
+        const user=await superAdminModel.findOne({email:email});
         if(user.myToken != myToken){
             return res.status(400).json({msg:"enter correct otp"});
         }
@@ -217,7 +169,7 @@ const verifyTokenOTP = async(req,res)=>{
 const updatePasswordOTP = async(req,res)=>{
 try {
     const {email,password} = req.body;
-    const user = await UserModel.findOne({email:email});
+    const user = await superAdminModel.findOne({email:email});
     if(user.myToken != 2911200429112004){
         return res.status(400).json({msg:'please verify yourself or try again'});
     }

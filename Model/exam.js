@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { type } = require("os");
 
 const ExamSchema = new mongoose.Schema({
   ExamType: {
@@ -39,7 +40,15 @@ const ExamSchema = new mongoose.Schema({
   Status: {
     type: String,
   },
-  
+  createdBy:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Admin'
+  },
+  questions:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Question'
+  }],
+  createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model("Exam", ExamSchema);

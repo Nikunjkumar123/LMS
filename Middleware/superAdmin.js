@@ -1,6 +1,6 @@
-const vefiryADMIN = async(req,res,next)=>{
+const VerifySuperAdmin = async(req,res,next)=>{
     try {
-        if(req.user.role == 'admin') next();
+        if(req.user.role == 'superAdmin') next();
         else{
             return res.status(400).json({msg:'only for admin'});
         }
@@ -9,4 +9,4 @@ const vefiryADMIN = async(req,res,next)=>{
     }
 }
 
-module.exports=vefiryADMIN
+module.exports=VerifySuperAdmin;
